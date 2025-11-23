@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub-Style Tutorial</title>
+
+  <style>
+    /* GitHub-like variables (light mode approximation) */
+    :root {
+      --color-bg: #f6f8fa;
+      --color-card: #ffffff;
+      --color-border: #d0d7de;
+      --color-muted: #f0f2f4;
+      --color-text: #24292f;
+      --color-text-muted: #57606a;
+
+      --color-green: #2da44e;
+      --color-green-hover: #2c974b;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--color-bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+        sans-serif;
+      color: var(--color-text);
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* Progress Bar */
+    .progress-wrapper {
+      margin-bottom: 25px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--color-muted);
+      border-radius: 5px;
+      border: 1px solid var(--color-border);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--color-green);
+      transition: width 0.4s;
+    }
+
+    .step-label {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    /* Card */
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 var(--color-border);
+      padding: 20px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+
+    .card p,
+    .card li {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    button {
+      padding: 8px 18px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 1px solid var(--color-border);
+      transition: background 0.2s;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--color-muted);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: #e4e7eb;
+    }
+
+    .btn-green {
+      background: var(--color-green);
+      color: white;
+      border: none;
+    }
+
+    .btn-green:hover:not(:disabled) {
+      background: var(--color-green-hover);
+    }
+
+    code {
+      background: var(--color-muted);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Progress -->
+    <div class="progress-wrapper">
+      <div class="progress-track">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="step-label" id="stepLabel">Step 1 of 3</div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+      <h2 id="stepTitle">Ready to make your first HTML + CSS + JavaScript Project?</h2>
+      <div id="stepContent">
+        <p>Create a project WITHOUT relying on A.I</p>
+        <ul>
+          <li>This will help you strengthen your critical thinking and debugging skills.</li>
+          <li>
+            Once that you've trained yourself enough, A.I becomes an assistant rather a boss.
+            Treat it as a tool, not a crutch.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons">
+      <button id="backBtn" class="btn-secondary" disabled>Back</button>
+      <button id="nextBtn" class="btn-green">Next</button>
+    </div>
+
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Ready to make your first HTML + CSS + JavaScript Project?",
+        content: `
+          <p>Create a project WITHOUT relying on A.I</p>
+          <ul>
+            <li>This will help you strengthen your critical thinking and debugging skills.</li>
+            <li>Once that you've trained yourself enough, A.I becomes an assistant rather a boss.
+            Treat it as a tool.</li>
+          </ul>
+        `
+      },
+      {
+        title: "Disable AI Search Results",
+        content: `
+          <p>Chrome may show AI-generated overviews. For this course, we'll set up a clean search shortcut.</p>
+
+          <p><strong>What you need to do:</strong></p>
+          <ul>
+            <li>Go to: <code>chrome://settings/searchEngines</code></li>
+            <li>Under <strong>Site search</strong>, click <strong>Add</strong>.</li>
+            <li>Name: <strong>UnfilteredSearch</strong></li>
+            <li>Shortcut: <strong>@web</strong></li>
+            <li>
+              URL with <code>%s</code>:
+              <br />
+              <code>{google:baseURL}search?q=%s&udm=14</code>
+            </li>
+          </ul>
+
+          <p>You can revert anytime by switching back to your old default engine.</p>
+
+          <p><strong>Why?</strong> Raw search results help you read real developer discussions and solutions.</p>
+        `
+      },
+      {
+          title: "Get started on your first project",
+          content: `
+            <p>Open the Projects homepage to view projects you can try.</p>
+          `
+        }
+    ];
+
+    let step = 1;
+
+    const titleEl = document.getElementById("stepTitle");
+    const contentEl = document.getElementById("stepContent");
+    const progressEl = document.getElementById("progressBar");
+    const stepLabel = document.getElementById("stepLabel");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function updateUI() {
+      const s = steps[step - 1];
+
+      titleEl.textContent = s.title;
+      contentEl.innerHTML = s.content;
+
+      // Progress bar
+      const progress = (step / steps.length) * 100;
+      progressEl.style.width = progress + "%";
+
+      // Step text
+      stepLabel.textContent = `Step ${step} of ${steps.length}`;
+
+      // Disable back when at first step
+      backBtn.disabled = step === 1;
+
+      // Change next button behaviour on the final step: show "Open Projects"
+      if (step === steps.length) {
+        nextBtn.textContent = 'Open Projects';
+        nextBtn.disabled = false;
+      } else {
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = false;
+      }
+    }
+
+    backBtn.onclick = () => {
+      if (step > 1) step--;
+      updateUI();
+    };
+
+    nextBtn.onclick = () => {
+      if (step < steps.length) {
+        step++;
+        updateUI();
+      } else {
+        // On the last step, open the Projects homepage
+        window.location.href = 'project-home-page.html';
+      }
+    };
+
+    updateUI();
+  </script>
+</body>
+</html>

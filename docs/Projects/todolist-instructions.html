@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>To‑Do List — Step-by-Step Guide</title>
+  <style>
+    body { font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:#f6f8fa; color:#24292f; margin:0; padding:24px }
+    .card { max-width:820px; margin:0 auto; background:#fff; border:1px solid #d0d7de; border-radius:8px; padding:20px }
+    h1 { font-size:20px; margin:0 0 10px }
+    p.lead { color:#57606a; margin:6px 0 16px }
+    h2 { font-size:16px; margin:16px 0 8px }
+    ul, ol { margin-left:20px }
+    .note { background:#f0f2f4; padding:10px; border-radius:6px; color:#57606a; margin-top:10px }
+    .progress-wrapper { margin-bottom:14px }
+    .progress-bar { height:8px;background:#f0f2f4;border:1px solid #d0d7de;border-radius:6px;overflow:hidden }
+    .progress-bar-inner { height:100%;width:0%;background:#2da44e;transition:width 0.25s }
+    button { padding:8px 14px;border-radius:6px;border:none;cursor:pointer }
+    #backBtn { background:#f0f2f4;color:#24292f;border:1px solid #d0d7de }
+    #nextBtn { background:#2da44e;color:#fff }
+    button:disabled { opacity:0.5; cursor:not-allowed }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="progress-wrapper">
+      <div class="progress-bar"><div id="stepProgress" class="progress-bar-inner"></div></div>
+      <div id="stepLabelSmall" style="font-size:12px;color:#57606a;margin-top:6px">Step 1 of 9</div>
+    </div>
+
+<h1>Procedure</h1>
+<p class="lead">Follow the steps. Each step shows what is required and gives a search query you can type in your search engine to figure out how to implement it.</p>
+
+<div id="stepCard" style="min-height:180px"></div>
+
+<div style="display:flex;gap:10px;margin-top:18px">
+  <button id="backBtn" disabled>Back</button>
+  <button id="nextBtn">Next</button>
+</div>
+
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Step 0: Requirements",
+        content: `<p>Prepare the main elements needed for the To-Do list:</p>
+                  <ul>
+                    <li>Text input for tasks</li>
+                    <li>Add button</li>
+                    <li>List container (&lt;ul&gt;)</li>
+                    <li>Functions: checkInput, createTask, appendTask, attachEvents</li>
+                  </ul>`
+      },
+      {
+        title: "Step 1: Input",
+        content: `<p>Add a text input with a label and placeholder.</p>
+                  <ul>
+                    <li>Accessible label</li>
+                    <li>Placeholder: "Enter task"</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to create a text input with label and placeholder in HTML"</p>`
+      },
+      {
+        title: "Step 2: Button",
+        content: `<p>Add an Add button next to the input.</p>
+                  <ul>
+                    <li>Clicking it will add a task</li>
+                    <li>Optional: disable when input is empty</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to create a button that adds item from input in JavaScript"</p>`
+      },
+      {
+        title: "Step 3: List",
+        content: `<p>Create a list container (&lt;ul&gt;) for tasks.</p>
+                  <ul>
+                    <li>Each &lt;li&gt; contains a checkbox and task title</li>
+                    <li>Keep it minimal: no extra buttons or controls</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to create a dynamic list with checkboxes in JavaScript"</p>`
+      },
+      {
+        title: "Step 4: checkInput() function",
+        content: `<p>Create <strong>checkInput(text)</strong> to:</p>
+                  <ul>
+                    <li>Trim input</li>
+                    <li>Return false for empty values</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to check if input is empty in JavaScript"</p>`
+      },
+      {
+        title: "Step 5: createTask() function",
+        content: `<p>Create <strong>createTask(text)</strong> to:</p>
+                  <ul>
+                    <li>Create &lt;li&gt; element with checkbox and task title</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to create li element with checkbox in JavaScript"</p>`
+      },
+      {
+        title: "Step 6: appendTask() function",
+        content: `<p>Create <strong>appendTask(li)</strong> to:</p>
+                  <ul>
+                    <li>Append &lt;li&gt; to the list</li>
+                    <li>Clear and focus input after adding</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to append li to ul and clear input in JavaScript"</p>`
+      },
+      {
+        title: "Step 7: attachEvents() function",
+        content: `<p>Create <strong>attachEvents(li)</strong> to:</p>
+                  <ul>
+                    <li>Attach checkbox toggle handler</li>
+                    <li>Optional: remove handler</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to add event listener to checkbox in li in JavaScript"</p>`
+      },
+      {
+        title: "Step 8: Testing",
+        content: `<p>Test your To-Do list behavior:</p>
+                  <ul>
+                    <li>Adding tasks via Add button</li>
+                    <li>Prevent adding empty input</li>
+                    <li>Toggle and remove items</li>
+                  </ul>
+                  <p class="note">Search (Optional): "how to test a JavaScript todo list"</p>`
+      }
+    ];
+
+    let step = 1;
+    const total = steps.length;
+    const stepCard = document.getElementById('stepCard');
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressEl = document.getElementById('stepProgress');
+    const stepLabelSmall = document.getElementById('stepLabelSmall');
+
+    function render() {
+      const s = steps[step-1];
+      stepCard.innerHTML = `<h2>${s.title}</h2>${s.content}`;
+      progressEl.style.width = (step/total*100)+'%';
+      stepLabelSmall.textContent = `Step ${step} of ${total}`;
+      backBtn.disabled = step===1;
+      nextBtn.textContent = step===total ? 'Done' : 'Next';
+    }
+
+    backBtn.addEventListener('click', () => { if(step>1){ step--; render(); } });
+    nextBtn.addEventListener('click', () => { 
+      if(step<total){ step++; render(); } 
+      else { alert('All steps complete! Good job!'); }
+    });
+
+    render();
+  </script>
+
+</body>
+</html>

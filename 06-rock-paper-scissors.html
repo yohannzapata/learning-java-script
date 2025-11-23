@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors</title>
+    </head>
+    <body>
+        <p>
+            Rules of Rock Paper Scissors 
+        </p>
+
+        <button onclick="
+            run('Rock');
+            ">
+
+            Rock
+        </button>
+
+        <button onclick="
+            run('Paper');
+            ">
+
+            Paper
+        </button>
+
+        <button onclick="
+            run('Scissors');
+            ">
+
+            Scissors
+        </button>
+
+        <button onclick="
+            resetStats();
+            ">
+
+            Reset Score
+        </button>
+
+        <script>
+            let botInput = '';
+            let result = '';
+            let score = JSON.parse(localStorage.getItem('score')) 
+            || {
+                win: 0,
+                lose: 0,
+                ties: 0
+            };
+
+
+
+            function run(userInput) {
+                if(randomInt(0, 2) === 0) botInput = 'Rock';
+                else if(randomInt(0, 2) === 1) botInput = 'Paper';
+                else if(randomInt(0, 2) === 2) botInput = 'Scissors';
+                
+                switch(userInput) {
+                    case 'Rock':
+                        if(botInput === 'Rock') result = "Tie.";
+                        else if(botInput === 'Paper') result = 'You lose!';
+                        else if(botInput === 'Scissors') result = 'You win!';
+                    break;
+                    case 'Paper':
+                        if(botInput === 'Rock') result = 'You win!';
+                        else if(botInput === 'Paper') result = "Tie.";
+                        else if(botInput === 'Scissors') result = 'You lose!';
+                    break;
+                    case 'Scissors':
+                        if(botInput === 'Rock') result = 'You lose!';
+                        else if(botInput === 'Paper') result = 'You win!';
+                        else if(botInput === 'Scissors') result = "Tie.";
+                    break;
+                }
+
+                if(result == "You win!") score.win += 1;
+                else if(result == "You lose!") score.lose += 1;
+                else if(result == "Tie.") score.ties += 1;
+                
+                localStorage.setItem('score', JSON.stringify(score));
+
+                alert(`You picked ${userInput}. Bot picked ${botInput}. ${result}` + 
+                    `\nWins: ${score.win}, Lose: ${score.lose}, Tie: ${score.ties},`);
+            }
+
+            function resetStats() {
+                score.win = 0;
+                score.lose = 0;
+                score.ties = 0;
+
+                localStorage.removeItem('score');
+
+                alert('Score reset: ' +
+                    `\nWins: ${score.win}, Lose: ${score.lose}, Tie: ${score.ties},`
+                );
+            }
+
+            let randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        </script>
+    </body>
+</html>

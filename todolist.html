@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+
+    <body>
+        <input id="todo-input", placeholder="Enter your task name"
+            onchange="
+                // checkInput();
+            "
+        >
+
+        <button 
+            onclick="
+                checkInput();
+            "   
+        >
+            Create a task
+        </button>
+
+        <ul id="myList"></ul>
+        
+        <script>
+            let list = document.getElementById("myList");
+
+            function checkInput() {
+                var textField = document.getElementById('todo-input').value;
+                if (textField === '') {
+                    alert('Please fill out this field');
+                } else {
+
+                }
+            }
+
+            function createTodo() {
+                
+            }
+
+        </script>
+    </body>
+</html>
